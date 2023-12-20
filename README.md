@@ -72,8 +72,8 @@ We used the codes from Lab 4 as a base code. [https://github.com/byett/dsd/tree/
 Our hex calculator serves as an everyday calculator, capable of completing addition, subtraction, multiplication, division, and modulo operations. The expansion of Lab 4 allowed us to critically think and troubleshoot through creating these new calculator operations, and also encounter some challenges, such as synthesis errors and overflow concerns. Despite the challenges faced, the process allows for careful data handling and multiple operations. Overall, the team was able to broaden the calculator’s abilities and deepen our understanding of VHDL implementation and hardware integration.
 
 ### Roles and Responsibilities
-Brandon Joel - Code/Modifications
+Brandon Joel - Code/Modifications, testing/troubleshooting
 
-Padraig Phelps - Code/Modifications
+Padraig Phelps - Code/Modifications, research
 
-Carly Tronolone - GitHub, system diagram
+Carly Tronolone - GitHub, system diagram, testing/troubleshooting
