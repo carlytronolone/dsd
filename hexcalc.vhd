@@ -1,6 +1,8 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.STD_LOGIC_UNSIGNED.ALL;
+USE IEEE.STD_LOGIC_ARITH.ALL;
+USE IEEE.MATH_REAL.ALL;
 
 ENTITY hexcalc IS
 	PORT (
@@ -12,7 +14,10 @@ ENTITY hexcalc IS
 		bt_eq : IN STD_LOGIC; -- calculator "=" button
 		bt_minus : IN STD_LOGIC; -- calculator "-" button
 		KB_col : OUT STD_LOGIC_VECTOR (4 DOWNTO 1); -- keypad column pins
-	KB_row : IN STD_LOGIC_VECTOR (4 DOWNTO 1)); -- keypad row pins
+	    KB_row : IN STD_LOGIC_VECTOR (4 DOWNTO 1); -- keypad row pins
+	    bt_mod : IN STD_LOGIC;
+	    mode_switch : IN STD_LOGIC
+	    );
 END hexcalc;
 
 ARCHITECTURE Behavioral OF hexcalc IS
@@ -44,6 +49,11 @@ ARCHITECTURE Behavioral OF hexcalc IS
 	TYPE state IS (ENTER_ACC, ACC_RELEASE, START_OP, OP_RELEASE, 
 	ENTER_OP, SHOW_RESULT); -- state machine states
 	SIGNAL pr_state, nx_state : state; -- present and next states
+	SIGNAL mode_check : STD_LOGIC;
+	SIGNAL temp_mult : INTEGER;
+	SIGNAL quotient : INTEGER := 0;
+	SIGNAL modulo : STD_LOGIC;
+	SIGNAL temp_modulo : INTEGER;
 BEGIN
 	ck_proc : PROCESS (clk_50MHz)
 	BEGIN
@@ -78,7 +88,8 @@ BEGIN
 		END PROCESS;
 		-- state maching combinatorial process
 		-- determines output of state machine and next state
-		sm_comb_pr : PROCESS (kp_hit, kp_value, bt_plus, bt_eq, acc, operand, pr_state, bt_minus, plus_minus)
+		sm_comb_pr : PROCESS (kp_hit, kp_value, bt_plus, bt_eq, acc, operand,
+		                      pr_state, bt_minus, bt_mod, mode_switch, modulo)
 		BEGIN
 			nx_acc <= acc; -- default values of nx_acc, nx_operand & display
 			nx_operand <= operand;
@@ -89,11 +100,28 @@ BEGIN
 						nx_acc <= acc(11 DOWNTO 0) & kp_value;
 						nx_state <= ACC_RELEASE;
 					ELSIF bt_plus = '1' THEN
-						nx_state <= START_OP;
-						plus_minus <= '1';
+						IF mode_switch = '0' THEN -- addition check
+                            nx_state <= START_OP;
+                            plus_minus <= '1';
+                            mode_check <= '0';
+                        ELSIF mode_switch = '1' THEN -- multiplication check
+                            nx_state <= START_OP;
+                            plus_minus <= '1';
+                            mode_check <= '1';
+                        END IF;
 					ELSIF bt_minus = '1' THEN
-					    nx_state <= START_OP;
-					    plus_minus <= '0';
+					   IF mode_switch = '0' THEN -- subtraction check
+                            nx_state <= START_OP;
+                            plus_minus <= '0';
+                            mode_check <= '0';
+                        ELSIF mode_switch = '1' THEN -- division check
+                            nx_state <= START_OP;
+                            plus_minus <= '0';
+                            mode_check <= '1';
+                        END IF;
+                    ELSIF bt_mod = '1' THEN
+                        nx_state <= START_OP;
+                        modulo <= '1';
 					ELSE
 						nx_state <= ENTER_ACC;
 					END IF;
@@ -118,12 +146,24 @@ BEGIN
 				WHEN ENTER_OP => -- waiting for next digit in 2nd operand
 					display <= operand;
 					IF bt_eq = '1' THEN
-					   IF plus_minus = '1' THEN
+					   IF modulo = '1' THEN -- modulo operation
+                            temp_modulo <= CONV_INTEGER(acc) mod CONV_INTEGER(operand);
+                            nx_acc <= CONV_STD_LOGIC_VECTOR(temp_modulo, 16);
+                            nx_state <= SHOW_RESULT;
+					   ELSIF plus_minus = '1' AND mode_check = '0' THEN -- addition  operation
                             nx_acc <= acc + operand;
                             nx_state <= SHOW_RESULT;
-                       ELSIF plus_minus = '0' THEN
+                       ELSIF plus_minus = '1' AND mode_check = '1' THEN -- multiplication operation
+                            temp_mult <= CONV_INTEGER(acc) * CONV_INTEGER(operand);
+                            nx_acc <= CONV_STD_LOGIC_VECTOR(temp_mult, 16);
+                            nx_state <= SHOW_RESULT;
+                       ELSIF plus_minus = '0' AND mode_check = '0' THEN -- subtraction operation
                             nx_acc <= acc - operand;
                             nx_state <= SHOW_RESULT;
+                       ELSIF plus_minus = '0' AND mode_check = '1' THEN -- division operation
+                            quotient <= INTEGER((CONV_INTEGER(acc)/CONV_INTEGER(operand)));
+                            nx_acc <= CONV_STD_LOGIC_VECTOR(quotient, 16);
+                            nx_state <= SHOW_RESULT;                     
                        END IF;
 					ELSIF kp_hit = '1' THEN
 						nx_operand <= operand(11 DOWNTO 0) & kp_value;
