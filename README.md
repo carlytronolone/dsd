@@ -1,13 +1,10 @@
 # CPE 487 Final Project: Hex Calculator 
 ## By Brandon Joel, Padraig Phelps, Carly Tronolone
-### Board 7
 
 ### Introduction
-The FPGA (Field Programmable Gate Array) will be programmed on the Nexys A7-100T board in order to complete simple hexadecimal calculations, such as addition, subtraction, multiplication, division, and modulus, on four-digit hexadecimal numbers. A 16-button keypad module will be connected to the Pmodport JA on the Nexys A7-100T board directly. 
+The goal of this project is to expand upon the overall functionality of the hexadecimal calculator from Lab 4. As the functionality of the original calculator only involved addition and subtraction, the group wants to add functionality for multiplication, division, and modulo operations. A 16-button keypad module will be connected to the Pmodport JA on the Nexys A7-100T board directly. 
 
 ![image](https://github.com/carlytronolone/dsd/assets/117042826/7c84b0de-891c-49fb-85e0-f2bc7346fb34)
-
-The goal of this project is to expand upon the overall functionality of the hexadecimal calculator from Lab 4. As the functionality of the original calculator only involved addition and subtraction, the group wants to add functionality for multiplication, division, and modulo operations.
 
 To make up for the lack of buttons on the Nexys A7-100T board, the plan is to use a switch to change operation modes. The original addition button will also have multiplication mapped to it, and the subtraction button will have division mapped to it. The switch will be used to toggle between modes to be able to perform addition and subtraction or multiplication and division. The only button not used on the original calculator will have modulo mapped to it.
 
