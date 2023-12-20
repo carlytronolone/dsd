@@ -8,7 +8,7 @@ The FPGA (Field Programmable Gate Array) will be programmed on the Nexys A7-100T
 --add image of keypad--
 --some kind of high level block diagram showing how different parts of your program connect together and/or showing how what you have created might fit into a more complete system could be appropriate instead.--
 
-### Bahaviors/Modified Codes
+### Behaviors/Modified Codes
 #### hexcalc.vhd
 - Top level source module
 - 
