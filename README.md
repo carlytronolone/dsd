@@ -57,16 +57,16 @@ We used the codes from Lab 4 as a base code. [https://github.com/byett/dsd/tree/
    - _BTNL_ is equal
    - _BTNR_ is modulo operation
    - _BTND_ is subraction/division operations
-   - If switch J15 is down/off, addition or subtraction can be performed
-   - If switch J15 is up/on, multiplication or division can be performed
+   - If switch _J15_ is down/off, addition or subtraction can be performed
+   - If switch _J15_ is up/on, multiplication or division can be performed
 
 ### Challenges
 - Synthesis errors for coding multiplication and division operations
-   - Because multiplication and division operations are integer operations in VHDL, some manipulation was required to get the right syntax in order to perform the operations. We have the operation be performed as a temporary integer signal, then the integer result is converted back into an STD_LOGIC_VECTOR
+   - Because multiplication and division operations are integer operations in VHDL, some manipulation was required to get the right syntax in order to perform the operations. We have the operation be performed as a temporary integer signal, then the integer result is converted back into an _STD_LOGIC_VECTOR_.
 - Overflows within multiplication operation
-   - To avoid overflows within the multiplication operation, we wanted to input a temporary function. Theoretically, this function would have the result be ‘0’ if the multiplication resulted in a value over FFFF. Unfortunately, we ran into accuracy issues and removed this overflow prevention.
+   - To avoid overflows within the multiplication operation, we wanted to input a temporary function. Theoretically, this function would have the result be _0_ if the multiplication resulted in a value over _FFFF_. Unfortunately, we ran into accuracy issues and removed this overflow prevention.
 - Board and keypad issues
-   - When testing our code, the display board was not showing any value other than ‘9’, even when trying to input values via the keypad. Initially, we thought the issue was with our code logic but upon further inspection and code testing, we concluded that something was wrong with either the Nexys A7 board or the keypad. To fix this, we went and got a new board and keypad, which worked. 
+   - When testing our code, the display board was not showing any value other than _9_, even when trying to input values via the keypad. Initially, we thought the issue was with our code logic but upon further inspection and code testing, we concluded that something was wrong with either the Nexys A7 board or the keypad. To fix this, we went and got a new board and keypad, which worked. 
 
 ### Conclusion
 Our hex calculator serves as an everyday calculator, capable of completing addition, subtraction, multiplication, division, and modulo operations. The expansion of Lab 4 allowed us to critically think and troubleshoot through creating these new calculator operations, and also encounter some challenges, such as synthesis errors and overflow concerns. Despite the challenges faced, the process allows for careful data handling and multiple operations. Overall, the team was able to broaden the calculator’s abilities and deepen our understanding of VHDL implementation and hardware integration.
