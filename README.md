@@ -73,5 +73,7 @@ Our hex calculator serves as an everyday calculator, capable of completing addit
 
 ### Roles and Responsibilities
 Brandon Joel - Code/Modifications
+
 Padraig Phelps - Code/Modifications
+
 Carly Tronolone - GitHub, system diagram
